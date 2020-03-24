@@ -1,0 +1,17 @@
+{% include 'header.html' %}
+
+<style>
+.fullscreen {
+    color: cyan;
+}
+.fullscreen:after {
+    content: "{{ data[0].get_name() }} (delay: {{ delay }} s)";
+}
+</style>
+<div class="container">
+    <div class="fullscreen" style="background-image:url({{ url_for('delaystream', delay=delay, gen=1) }});"></div>
+</div>
+
+<script src="{{ url_for('static',filename='js/menu.js') }}"></script>
+
+{% include 'footer.html' %}

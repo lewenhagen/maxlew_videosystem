@@ -1,0 +1,22 @@
+{% include 'header.html' %}
+<style>
+    .dual {
+        color: cyan;
+
+    }
+
+    .left:after {
+        content: "{{ data[0].get_name() }} (delay: {{ delay }}s)";
+    }
+    .right:after {
+        content: "{{ data[1].get_name() }} (delay: {{ delay }}s)";
+    }
+</style>
+<div class="container">
+    <div class="dual left" style="background-image:url({{ url_for('delaystream', delay=delay, gen=1) }});"></div>
+    <div class="dual right" style="background-image:url({{ url_for('delaystream', delay=delay, gen=2) }});"></div>
+</div>
+
+<script src="{{ url_for('static',filename='js/menu.js') }}"></script>
+
+{% include 'footer.html' %}

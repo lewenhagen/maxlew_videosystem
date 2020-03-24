@@ -1,0 +1,31 @@
+{% include 'header.html' %}
+<style>
+.quarter {
+    color: cyan;
+}
+
+.one:after {
+    content: "{{ data[0].get_name() }} (delay: {{ delay }} s)"
+}
+.two:after {
+    content: "{{ data[1].get_name() }} (delay: {{ delay+5 }} s)"
+}
+.three:after {
+    content: "{{ data[2].get_name() }} (delay: {{ delay+10 }} s)"
+}
+.four:after {
+    content: "{{ data[3].get_name() }} (delay: {{ delay+15 }} s)"
+}
+</style>
+<div class="container">
+    <div class="multiple">
+        <div class="one quarter flex-item" style="background-image:url({{ url_for('delaystream', delay=delay, gen=1) }});"></div>
+        <div class="two quarter flex-item" style="background-image:url({{ url_for('delaystream', delay=delay+5, gen=2) }});"></div>
+        <div class="three quarter flex-item" style="background-image:url({{ url_for('delaystream', delay=delay+10, gen=3) }});"></div>
+        <div class="four quarter flex-item" style="background-image:url({{ url_for('delaystream', delay=delay+15, gen=4) }});"></div>
+    </div>
+</div>
+
+<script src="{{ url_for('static',filename='js/menu.js') }}"></script>
+
+{% include 'footer.html' %}

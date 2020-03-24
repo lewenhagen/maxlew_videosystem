@@ -1,0 +1,18 @@
+{% include 'header.html' %}
+<div class="small_logo">
+    <img src="{{ url_for('static',filename='img/maxlew_logo.svg') }}" alt="logo">
+</div>
+<div class="nes-container is-rounded" style="width: 50%; margin: 0 auto;margin-top: 10%">
+<div class="lists">
+    <h1>{{ header }}</h1>
+    <ul class="nes-list">
+        {% for choice in menu.choices %}
+            <li>{{ loop.index }}. {{ choice }} </li>
+        {% endfor %}
+        <li>0. Main menu </li>
+    </ul>
+</div>
+
+<script src="{{ url_for('static',filename='js/' + menu.jsmenu +'') }}"></script>
+
+{% include 'footer.html' %}

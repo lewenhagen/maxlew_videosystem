@@ -1,0 +1,14 @@
+{% include 'header.html' %}
+<style>
+.fullscreen:after {
+    color: cyan;
+    content: "{{ data.get_name() }} (LIVE)";
+}
+</style>
+<div class="container">
+    <div class="fullscreen" style="background-image:url({{ data.get_url() }});"></div>
+
+</div>
+
+<script src="{{ url_for('static',filename='js/menu.js') }}"></script>
+{% include 'footer.html' %}

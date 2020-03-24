@@ -1,0 +1,22 @@
+{% include 'header.html' %}
+
+<style>
+    .dual {
+        color: cyan;
+    }
+    .left:after {
+        content: "{{ cams[0].get_name() }} (LIVE)";
+    }
+    .right:after {
+        content: "{{ cams[1].get_name() }} (LIVE)";
+    }
+</style>
+
+<div class="container">
+    <div class="dual left" style="background-image:url({{ cams[0].get_url() }});"></div>
+    <div class="dual right" style="background-image:url({{ cams[1].get_url() }});"></div>
+</div>
+
+<script src="{{ url_for('static',filename='js/menu.js') }}"></script>
+
+{% include 'footer.html' %}

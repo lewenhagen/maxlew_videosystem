@@ -1,0 +1,36 @@
+{% include 'header.html' %}
+
+<div class="container">
+    <div class="nes-container is-rounded" style="margin: 0 auto;">
+
+        <form class="selectform" method="GET" action="/stream">
+            <label for="default_select">Välj delay (sekunder)</label>
+            <div class="nes-select">
+                <select name="delay" required id="default_select" autofocus onchange="this.form.submit()">
+                    <option value="" disabled selected hidden>Välj...</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="{{ url_for('static',filename='js/menu.js') }}"></script>
+<script>
+    document.addEventListener("keydown", function(event) {
+        if (event.key === "ArrowUp" || event.key === "ArrowDown" || event.key === "ArrowRight") {
+            event.preventDefault();
+        }
+    })
+</script>
+
+{% include 'footer.html' %}
