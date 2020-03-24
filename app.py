@@ -287,6 +287,13 @@ def delaystream(delay, gen):
         return Response(gen4(delay), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
+@app.route("/splashscreen")
+def splashscreen():
+    """ splashscreen middle route """
+
+    return render_template("splashscreen.html")
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     """

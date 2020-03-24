@@ -18,7 +18,7 @@ else
     kill $oldport && echo "Old stuff killed."
 fi
 
-cd ~/git/priv/python-ip && python3 app.py &
+cd ~/git/priv/maxlew_videosystem && python3 app.py &
 
 sleep 3
 
