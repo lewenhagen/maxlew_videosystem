@@ -9,7 +9,14 @@
             case "2":
             case "3":
             case "4":
-                window.location.replace(`/selectbox/${key}`);
+            case "5":
+            case "6":
+            case "7":
+            case "8":
+            case "9":
+                if (parseInt(key) < document.getElementsByTagName("li").length) {
+                    window.location.replace(`/selectbox/${key}`);
+                }
                 break;
             case "0":
                 window.location.replace("/0");

@@ -12,13 +12,13 @@ import gc
 # User defined options
 # ["<name>", <ipadress>]
 user_setup = [
-    ["Hopp", "http://192.168.1.133"],
-    ["Studs", "http://192.168.1.158"]
+    ["Volt", "http://192.168.1.133"],
+    ["Kullerbytta", "http://192.168.1.158"]
 ]
 
 # Supervariable, going to hold all values
 data = {}
-data["cameras"] = functions.init_list_of_new_cameras(user_setup)
+# data["cameras"] = functions.init_list_of_new_cameras(user_setup)
 data["mapping"] = [item[0] for item in user_setup]
 
 data["single"] = None
@@ -33,7 +33,8 @@ menu = [
             "LIVE - Doublecam",
             "DELAY - Singlecam",
             "DELAY - Singlecam Quadview",
-            "DELAY - Doublecam"
+            "DELAY - Doublecam",
+            "LIVE - 4 cam Quadview (need 4 cams)"
         ],
         "jsmenu": "menu.js"
     },
@@ -65,7 +66,7 @@ def gen1(delay):
     camera = data["delayed"][0]
     counter = 0
     frames = []
-
+    # frames.append(camera.get_loading_image())
     while True:
         try:
             frames.append(camera.get_frame())
@@ -73,16 +74,18 @@ def gen1(delay):
             counter+=1
             if len(frames) >= (int(delay)*25):
                 yield (b'--frame\r\n'
-                       b'Content-Type: image/jpeg\r\n\r\n' + frames.pop(0) + b'\r\n\r\n')
+                       b'Content-Type: image/jpeg\r\n\r\n' + frames.pop(0) + b'\r\n')
             else:
-                if len(frames) > 0:
-                    yield (b'--frame\r\n'
-                        b'Content-Type: image/jpeg\r\n\r\n' + frames[0] + b'\r\n\r\n')
+                # if len(frames) > 0:
+                yield (b'--frame\r\n'
+                    b'Content-Type: image/jpeg\r\n\r\n' + camera.get_loading_image() + b'\r\n')
         except:
             print("Gen 1 done.")
+            frames = []
+            # camera.release_cam()
             break
-    if len(data["delayed"]) > 0:
-        camera.release_cam()
+    # if len(data["delayed"]) > 0:
+    #     camera.release_cam()
 
 def gen2(delay):
     global data
@@ -96,17 +99,19 @@ def gen2(delay):
             counter+=1
             if len(frames) >= (int(delay)*25):
                 yield (b'--frame\r\n'
-                       b'Content-Type: image/jpeg\r\n\r\n' + frames.pop(0) + b'\r\n\r\n')
+                       b'Content-Type: image/jpeg\r\n\r\n' + frames.pop(0) + b'\r\n')
             else:
-                if len(frames) > 0:
-                    yield (b'--frame\r\n'
-                        b'Content-Type: image/jpeg\r\n\r\n' + frames[0] + b'\r\n\r\n')
+                # if len(frames) >= 0:
+                yield (b'--frame\r\n'
+                    b'Content-Type: image/jpeg\r\n\r\n' + camera.get_loading_image() + b'\r\n')
         except:
             print("Gen 2 done.")
+            frames = []
+            # camera.release_cam()
             break
 
-    if len(data["delayed"]) > 0:
-        camera.release_cam()
+    # if len(data["delayed"]) > 0:
+    #     camera.release_cam()
 
 def gen3(delay):
     global data
@@ -122,14 +127,14 @@ def gen3(delay):
                 yield (b'--frame\r\n'
                        b'Content-Type: image/jpeg\r\n\r\n' + frames.pop(0) + b'\r\n\r\n')
             else:
-                if len(frames) > 0:
+                if len(frames) >= 0:
                     yield (b'--frame\r\n'
-                        b'Content-Type: image/jpeg\r\n\r\n' + frames[0] + b'\r\n\r\n')
+                        b'Content-Type: image/jpeg\r\n\r\n' + camera.get_loading_image() + b'\r\n\r\n')
         except:
+            # camera.release_cam()
             print("Gen 3 done.")
             break
-    if len(data["delayed"]) > 0:
-        camera.release_cam()
+    # if len(data["delayed"]) > 0:
 
 def gen4(delay):
     global data
@@ -147,14 +152,14 @@ def gen4(delay):
             else:
                 if len(frames) > 0:
                     yield (b'--frame\r\n'
-                        b'Content-Type: image/jpeg\r\n\r\n' + frames[0] + b'\r\n\r\n')
+                        b'Content-Type: image/jpeg\r\n\r\n' + camera.get_loading_image() + b'\r\n\r\n')
         except:
+            # camera.rel0ease_cam()
             print("Gen 4 done.")
             break
 
 
-    if len(data["delayed"]) > 0:
-        camera.release_cam()
+    # if len(data["delayed"]) > 0:
 
 
 
@@ -170,6 +175,10 @@ def main(menu_nr):
     global menu
     global data
 
+    data["cameras"] = []
+    data["cameras"] = functions.init_list_of_new_cameras(user_setup)
+    print("Initializing cameras")
+
     try:
         gc.collect()
         print("Freeing some memory")
@@ -177,10 +186,18 @@ def main(menu_nr):
         print("No memory to set free...")
 
     try:
+        if len(data["delayed"]) > 0:
+            for cam in data["delayed"]:
+                del cam
+            print("Releasing delayed cams")
+    except Exception as e:
+        print(e)
+
+    try:
         data["single"] = None
         data["dual"] = tuple()
-        data["delayed"] = []
-        print("Releasing cams")
+
+        print("Releasing single, dual cams")
     except:
         print("No cams to release")
 
@@ -285,12 +302,23 @@ def delta(cam_nr):
     return render_template("selectdelta.html")
 
 
+@app.route('/delta2', methods=['GET'])
+def delta2():
+    """ Route for the infamous quad cam #2 """
+    global data
+
+    delay = int(request.args.get("delay"))
+    data["delay"] = delay
+
+    return render_template("select_time_delta.html")
+
 
 @app.route('/quad', methods=['GET'])
 def quad():
     """ Route for the infamous quad cam """
-    delay = int(request.args.get("delay"))
-    return render_template("quad.html", data=data["delayed"], delay=delay)
+    timedelta = int(request.args.get("timedelta"))
+
+    return render_template("quad.html", data=data["delayed"], delay=data["delay"], delta=timedelta)
 
 
 
@@ -312,6 +340,17 @@ def splashscreen():
     """ splashscreen middle route """
 
     return render_template("splashscreen.html")
+
+@app.route("/all_quad")
+def all_quad():
+    """ All quad route """
+    global data
+    if len(user_setup) < 4:
+        return redirect(url_for("main"))
+    else:
+        temp = functions.get_all_cams(data, user_setup)
+
+        return render_template("super_quad.html", data=temp)
 
 
 @app.errorhandler(404)

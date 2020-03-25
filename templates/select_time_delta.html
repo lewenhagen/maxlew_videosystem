@@ -3,10 +3,10 @@
 <div class="container">
     <div class="nes-container is-rounded" style="margin: 0 auto;">
 
-        <form class="selectform" method="GET" action="/stream">
-            <label for="default_select">Välj delay 1-10 (sekunder)</label>
+        <form class="selectform" method="GET" action="/quad">
+            <label for="default_select">Välj "timedelta" (sekunder)</label>
             <div class="nes-select">
-                <select name="delay" required id="default_select" autofocus onchange="this.form.submit()">
+                <select name="timedelta" required id="default_select" autofocus onchange="this.form.submit()">
                     <option value="" disabled selected hidden>Välj...</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -27,7 +27,7 @@
 <script src="{{ url_for('static',filename='js/menu.js') }}"></script>
 <script>
     document.addEventListener("keydown", function(event) {
-        if (event.key === "ArrowUp" || event.key === "ArrowDown" || event.key === "ArrowRight") {
+        if (event.key === "ArrowUp" || event.key === "ArrowDown") {
             event.preventDefault();
         }
     })

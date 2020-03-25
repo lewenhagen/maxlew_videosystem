@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import cv2
+import numpy as np
 
 class VideoCamera(object):
     def __init__(self, options, resolution="1280x720"):
@@ -21,9 +22,19 @@ class VideoCamera(object):
     def release_cam(self):
         self.video.release()
 
+    def get_loading_image(self):
+        img = cv2.imread('static/img/hour.jpg')
+        ret, jpeg = cv2.imencode('.JPEG', img)
+        return jpeg.tobytes()
+
     def get_frame(self):
         success, image = self.video.read()
-        ret, jpeg = cv2.imencode('.jpg', image)
+
+        # print(success, image)
+        if not success:
+            success, image = self.video.read()
+        else:
+            ret, jpeg = cv2.imencode('.JPEG', image)
 
         if not ret:
             return

@@ -1,0 +1,31 @@
+{% include 'header.html' %}
+<style>
+.quarter {
+    color: cyan;
+}
+
+.one:after {
+    content: "{{ data[0].get_name() }} (LIVE)"
+}
+.two:after {
+    content: "{{ data[1].get_name() }} (LIVE)"
+}
+.three:after {
+    content: "{{ data[2].get_name() }} (LIVE)"
+}
+.four:after {
+    content: "{{ data[3].get_name() }} (LIVE)"
+}
+</style>
+<div class="container">
+    <div class="multiple">
+        <div class="one quarter flex-item" style="background-image:url({{ data[0].get_url() }});"></div>
+        <div class="two quarter flex-item" style="background-image:url({{ data[1].get_url() }});"></div>
+        <div class="three quarter flex-item" style="background-image:url({{ data[2].get_url() }});"></div>
+        <div class="four quarter flex-item" style="background-image:url({{ data[3].get_url() }});"></div>
+    </div>
+</div>
+
+<script src="{{ url_for('static',filename='js/menu.js') }}"></script>
+
+{% include 'footer.html' %}
