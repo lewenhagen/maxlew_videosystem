@@ -10,10 +10,10 @@ class VideoCamera(object):
         self.url = "{}/axis-cgi/mjpg/video.cgi?resolution={}&compression=25&camera=1".format(self.ip, self.resolution)
         self.video = cv2.VideoCapture(self.url)
         self.frames = []
-        self.delay = 15
-        self.counter = 0
-        self.fps = 15
-        self.timer = self.delay * self.fps
+        # self.delay = 15
+        # self.counter = 0
+        # self.fps = 15
+        # self.timer = self.delay * self.fps
 
     def __del__(self):
         self.video.release()

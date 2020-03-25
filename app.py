@@ -157,7 +157,10 @@ def gen4(delay):
         camera.release_cam()
 
 
+
 app = Flask(__name__)
+
+
 
 @app.route("/", defaults={'menu_nr': 0})
 @app.route("/<int:menu_nr>")
@@ -221,6 +224,7 @@ def selectbox(cam_nr):
 
 @app.route('/stream', methods=['GET'])
 def stream():
+    """ Route for streaming single cam """
     global data
 
     chosencamera = functions.get_single_cam(data)
@@ -233,6 +237,7 @@ def stream():
         return render_template("one_cam.html", data=chosencamera)
 
 
+
 @app.route("/select-dual-cams/<int:left>/<int:right>")
 def select_dual_cam(left, right):
     """ select_dual_cam route """
@@ -242,25 +247,34 @@ def select_dual_cam(left, right):
 
     return render_template("dual.html", cams=chosencams, left=left, right=right)
 
+
+
 @app.route("/select-dual-delay/<int:left>/<int:right>")
 def select_dual_delay(left, right):
     """ select_dual_delay route """
     global data
+
     data["dual"] = (left-1, right-1)
     data["delayed"] = list(functions.get_dual_cams(data))
 
     return render_template("selectdualdelay.html")
 
+
+
 @app.route('/stream-dual-delay', methods=['GET'])
 def stream_dual_delay():
+    """ Route for streaming dual with delay """
     global data
 
     delay = int(request.args.get("delay"))
     return render_template("dual_delay.html", data=data["delayed"], delay=delay)
 
+
+
 @app.route("/delta/<int:cam_nr>")
 def delta(cam_nr):
     """ delta middle route """
+
     global data
     global user_setup
 
@@ -270,13 +284,19 @@ def delta(cam_nr):
 
     return render_template("selectdelta.html")
 
+
+
 @app.route('/quad', methods=['GET'])
 def quad():
+    """ Route for the infamous quad cam """
     delay = int(request.args.get("delay"))
     return render_template("quad.html", data=data["delayed"], delay=delay)
 
+
+
 @app.route('/delaystream/<int:delay>/<int:gen>')
 def delaystream(delay, gen):
+    """ Route used by delayed streams """
     if gen == 1:
         return Response(gen1(delay), mimetype='multipart/x-mixed-replace; boundary=frame')
     elif gen == 2:
