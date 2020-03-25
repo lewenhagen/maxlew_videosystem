@@ -25,7 +25,6 @@ data["single"] = None
 data["dual"] = tuple()
 data["delayed"] = []
 
-
 menu = [
     {
         "choices": [
