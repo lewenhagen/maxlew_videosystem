@@ -12,7 +12,7 @@ import gc
 # User defined options
 # ["<name>", <ipadress>]
 user_setup = [
-    ["Volt", "http://192.168.1.133"],
+    # ["Volt", "http://192.168.1.133"],
     ["Kullerbytta", "http://192.168.1.158"]
 ]
 
