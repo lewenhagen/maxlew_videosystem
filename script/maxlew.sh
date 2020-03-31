@@ -8,6 +8,13 @@
 #
 # xdotool
 # sudo apt-get install xdotool
+
+# Command to find connected Axis cameras
+# nmap -sP $(ifconfig | grep eno1 -a1 | tail -1 | sed -En 's/inet.([0-9]{3}.*)\s\snetmask.*/\1/p' | cut -d"." -f1-3 | xargs).0/24 | grep axis | cut -d"(" -f2 | cut -d ")" -f1
+
+# Perhaps need: ^
+# sudo apt install nmap net-tools
+
 sleep 10
 #
 oldport=$(lsof -i :5000 | cut -d" " -f2 | tail -n1)
