@@ -9,11 +9,11 @@ nmap -sP $(/sbin/ifconfig | grep eno1 -a1 | tail -1 | sed -En 's/inet.([0-9]{3}.
 
 if [ -s "$path" ]
 then
-    echo "The file $path is created and contains the ipadresses."
-    read -p "Do you want to doublecheck? [y/N] " answer
+    echo "At least one camera is recognized and active."
+    read -p "Do you want to check the ipadresses? [y/N] " answer
     if [ "$answer" = "y" ]; then
         cat "$path"
     fi
 else
-   echo "Something went wrong with the super command!!"
+   echo "No cameras detected!!"
 fi
