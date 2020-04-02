@@ -234,7 +234,7 @@ def selectbox(cam_nr):
     if cam_nr <= len(user_setup):
         data["single"] = cam_nr-1
 
-    return render_template("selectbox.html")
+    return render_template("selectbox.html", cam=functions.get_single_cam(data))
 
 
 
@@ -244,8 +244,12 @@ def stream():
     global data
 
     chosencamera = functions.get_single_cam(data)
+    delay = 0
+    try:
+        delay = int(request.args.get("delay"))
+    except:
+        pass
 
-    delay = int(request.args.get("delay"))
     if delay > 0:
         data["delayed"] = [chosencamera]
         return render_template("one_cam_delay.html", data=data["delayed"], delay=delay)
@@ -279,7 +283,11 @@ def select_dual_delay(left, right):
 def select_dual_delay_right():
     """ select_dual_delay route """
     global data
-    delay = int(request.args.get("delay"))
+    delay = 0
+    try:
+        delay = int(request.args.get("delay"))
+    except:
+        pass
 
     data["delayleft"] = delay
 
@@ -291,9 +299,14 @@ def select_dual_delay_right():
 def stream_dual_delay():
     """ Route for streaming dual with delay """
     global data
+    delay = 0
+    try:
+        delay = int(request.args.get("delay"))
+    except:
+        pass
 
-    delay = int(request.args.get("delay"))
     data["delayright"] = delay
+
     return render_template("dual_delay.html", data=data["delayed"], delayl=data["delayleft"], delayr=data["delayright"])
 
 
@@ -309,7 +322,7 @@ def delta(cam_nr):
         data["single"] = cam_nr - 1
         data["delayed"] = functions.set_quad_cam(data, user_setup)
 
-    return render_template("selectdelta.html")
+    return render_template("selectdelta.html", cam=data["delayed"][0])
 
 
 @app.route('/delta2', methods=['GET'])
@@ -320,13 +333,17 @@ def delta2():
     delay = int(request.args.get("delay"))
     data["delay"] = delay
 
-    return render_template("select_time_delta.html")
+    return render_template("select_time_delta.html", cam=data["delayed"][0])
 
 
 @app.route('/quad', methods=['GET'])
 def quad():
     """ Route for the infamous quad cam """
-    timedelta = int(request.args.get("timedelta"))
+    timedelta = 0
+    try:
+        timedelta = int(request.args.get("timedelta"))
+    except:
+        pass
 
     return render_template("quad.html", data=data["delayed"], delay=data["delay"], delta=timedelta)
 
@@ -382,6 +399,6 @@ def internal_server_error(e):
 
 
 if __name__ == "__main__":
-    from waitress import serve
-    serve(app, host="0.0.0.0", port=5000, threads=8)
-    # app.run(threaded=True)
+    # from waitress import serve
+    # serve(app, host="0.0.0.0", port=5000, threads=8)
+    app.run(threaded=True)

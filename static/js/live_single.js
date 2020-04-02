@@ -1,8 +1,6 @@
 (function() {
     "use strict";
-    document.addEventListener("DOMContentLoaded", function(event) {
-        document.documentElement.webkitRequestFullscreen();
-    });
+    
     document.addEventListener("keydown", function(event) {
         let key = event.key;
 
@@ -13,7 +11,7 @@
             case "4":
                 window.location.replace(`/selectcam/${key}`);
                 break;
-            case "0":
+            case "+":
                 window.location.replace("/0");
                 break;
         }

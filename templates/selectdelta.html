@@ -4,31 +4,23 @@
     <div class="nes-container is-rounded" style="margin: 0 auto;">
 
         <form class="selectform" method="GET" action="/delta2">
-            <label for="default_select">Välj delay (sekunder)</label>
-            <div class="nes-select">
-                <select name="delay" required id="default_select" autofocus onchange="this.form.submit()">
-                    <option value="" disabled selected hidden>Välj...</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                </select>
-            </div>
+            <label for="name_field">Skriv in önskad delay för <span class="logocolor">{{ cam.get_name() }} </span>(s) och tryck Enter:</label>
+            <input type="number" autofocus id="name_field" name="delay" class="nes-input">
+            <input type="submit" hidden>
         </form>
     </div>
 </div>
 
-<script src="{{ url_for('static',filename='js/menu.js') }}"></script>
+<!-- <script src="{{ url_for('static',filename='js/menu.js') }}"></script> -->
 <script>
     document.addEventListener("keydown", function(event) {
-        if (event.key === "ArrowUp" || event.key === "ArrowDown") {
-            event.preventDefault();
+        let key = event.key;
+
+        switch(key) {
+            case "+":
+                window.location.replace("/0");
+                break;
+
         }
     })
 </script>

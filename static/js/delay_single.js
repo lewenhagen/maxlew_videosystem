@@ -18,7 +18,7 @@
                     window.location.replace(`/selectbox/${key}`);
                 }
                 break;
-            case "0":
+            case "+":
                 window.location.replace("/0");
                 break;
         }

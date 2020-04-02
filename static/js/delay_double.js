@@ -52,7 +52,7 @@
                     window.location.replace(`/select-dual-delay-left/${selectedCams[0]}/${selectedCams[1]}`);
                 }
                 break;
-            case "0":
+            case "+":
                 window.location.replace("/0");
                 break;
 
