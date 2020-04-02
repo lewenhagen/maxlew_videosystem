@@ -15,6 +15,8 @@
 # Perhaps need: ^
 # sudo apt install nmap net-tools
 
+# For autostart, make sure xfce4-terminal is installed. Better for background images
+
 sleep 10
 #
 oldport=$(lsof -i :5000 | cut -d" " -f2 | tail -n1)
