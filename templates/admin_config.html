@@ -1,0 +1,61 @@
+{% include 'header.html' %}
+<style>
+input:focus {
+  border: 2px solid #00AEEF;
+}
+input {
+    padding: 0.5em;
+}
+</style>
+<div class="small_logo">
+    <img src="{{ url_for('static',filename='img/maxlew_logo.svg') }}" alt="logo">
+</div>
+<div class="nes-container is-rounded" style="width: 50%; margin: 0 auto;margin-top: 10%">
+    <form method="POST" action="{{ url_for('adminconfig') }}">
+        <h4>Enter name for each camera. Toggle camera with TAB-key. Press Enter when done.</h4>
+        {% for item in data %}
+            <!-- <input type="number" id="ip_{{ loop.index }}" name="ip_{{ loop.index }}" value="{{ item }}" disabled><br> -->
+
+            <img src="http://{{ item }}/axis-cgi/mjpg/video.cgi?resolution=320x180&compression=25&camera=1" style="margin-bottom: 20px;">
+
+            <label for="name_{{ loop.index }}">Name:</label>
+                <input type="text" id="name_{{ loop.index }}" autofocus name="name_{{ loop.index }}" placeholder="Enter camera name" required>
+        {% endfor %}
+
+        <input type="submit" name="done" hidden>
+    </form>
+</div>
+<script>
+    document.addEventListener("keydown", function(event) {
+        let key = event.key;
+
+        switch(key) {
+            // case "1":
+            //     window.location.replace("/admin/check");
+            //     break;
+            // case "2":
+            //     let el = document.getElementsByClassName("nes-container")[0];
+            //     el.innerHTML += `
+            //     <form class="selectform" method="GET" action="/admin-search">
+            //         <label for="name_field">Manufacturer?</label>
+            //         <input type="text" autofocus id="name_field" name="search" class="nes-input">
+            //         <input type="submit" hidden>
+            //         </form>
+            //     `;
+            //     // window.location.replace("/admin/ipcheck");
+            //     break;
+            // case "3":
+            //     window.location.replace("/admin-config");
+            //     break;
+            // case "+":
+            //     window.location.replace("/0");
+            //     break;
+            case "-":
+                window.location.replace("/admin/menu");
+                break;
+
+        }
+    })
+</script>
+
+{% include 'footer.html' %}

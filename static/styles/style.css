@@ -26,7 +26,11 @@ body {
     justify-content: center;
 }
 
-
+.admin-config {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
 
 .lists > h1 {
     text-align: center;

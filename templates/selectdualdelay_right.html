@@ -5,7 +5,7 @@
 
         <form class="selectform" method="GET" action="/stream-dual-delay">
             <label for="name_field">Skriv in önskad delay för <span class="logocolor">{{ cam.get_name() }} </span>(s) och tryck Enter:</label>
-            <input type="number" autofocus id="name_field" name="delay" class="nes-input">
+            <input type="number" autofocus id="name_field" name="delay" class="nes-input" required>
             <input type="submit" hidden>
         </form>
     </div>
