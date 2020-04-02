@@ -12,7 +12,7 @@ import gc
 # User defined options
 # ["<name>", <ipadress>]
 user_setup = [
-    # ["Volt", "http://192.168.1.133"],
+    ["Volt", "http://192.168.1.133"],
     ["Kullerbytta", "http://192.168.1.158"]
 ]
 
@@ -265,7 +265,7 @@ def select_dual_cam(left, right):
 
 
 
-@app.route("/select-dual-delay/<int:left>/<int:right>")
+@app.route("/select-dual-delay-left/<int:left>/<int:right>")
 def select_dual_delay(left, right):
     """ select_dual_delay route """
     global data
@@ -273,7 +273,17 @@ def select_dual_delay(left, right):
     data["dual"] = (left-1, right-1)
     data["delayed"] = list(functions.get_dual_cams(data))
 
-    return render_template("selectdualdelay.html")
+    return render_template("selectdualdelay_left.html", cam=data["delayed"][0])
+
+@app.route("/select-dual-delay-right", methods=['GET'])
+def select_dual_delay_right():
+    """ select_dual_delay route """
+    global data
+    delay = int(request.args.get("delay"))
+
+    data["delayleft"] = delay
+
+    return render_template("selectdualdelay_right.html", cam=data["delayed"][1])
 
 
 
@@ -283,7 +293,8 @@ def stream_dual_delay():
     global data
 
     delay = int(request.args.get("delay"))
-    return render_template("dual_delay.html", data=data["delayed"], delay=delay)
+    data["delayright"] = delay
+    return render_template("dual_delay.html", data=data["delayed"], delayl=data["delayleft"], delayr=data["delayright"])
 
 
 

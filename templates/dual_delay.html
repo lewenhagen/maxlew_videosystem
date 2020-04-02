@@ -6,15 +6,15 @@
     }
 
     .left:after {
-        content: "{{ data[0].get_name() }} (delay: {{ delay }}s)";
+        content: "{{ data[0].get_name() }} (delay: {{ delayl }}s)";
     }
     .right:after {
-        content: "{{ data[1].get_name() }} (delay: {{ delay }}s)";
+        content: "{{ data[1].get_name() }} (delay: {{ delayr }}s)";
     }
 </style>
 <div class="container">
-    <div class="dual left" style="background-image:url({{ url_for('delaystream', delay=delay, gen=1) }});"></div>
-    <div class="dual right" style="background-image:url({{ url_for('delaystream', delay=delay, gen=2) }});"></div>
+    <div class="dual left" style="background-image:url({{ url_for('delaystream', delay=delayl, gen=1) }});"></div>
+    <div class="dual right" style="background-image:url({{ url_for('delaystream', delay=delayr, gen=2) }});"></div>
 </div>
 
 <script src="{{ url_for('static',filename='js/menu.js') }}"></script>

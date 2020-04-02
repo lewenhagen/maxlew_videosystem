@@ -4,7 +4,7 @@
     <div class="nes-container is-rounded" style="margin: 0 auto;">
 
         <form class="selectform" method="GET" action="/stream-dual-delay">
-            <label for="default_select">Välj delay (sekunder)</label>
+            <label for="default_select">Välj delay för {{ cam.get_name() }} (sekunder)</label>
             <div class="nes-select">
                 <select name="delay" required id="default_select" autofocus onchange="this.form.submit()">
                     <option value="" disabled selected hidden>Välj...</option>

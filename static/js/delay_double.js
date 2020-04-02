@@ -49,7 +49,7 @@
                 if (selectedCams.length != 2) {
                     console.log("need 2 cameras");
                 } else {
-                    window.location.replace(`/select-dual-delay/${selectedCams[0]}/${selectedCams[1]}`);
+                    window.location.replace(`/select-dual-delay-left/${selectedCams[0]}/${selectedCams[1]}`);
                 }
                 break;
             case "0":
