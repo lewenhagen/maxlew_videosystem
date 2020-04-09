@@ -77,18 +77,19 @@ boot()
 
 init()
 {
+    counter=0
     if [ -z "$1" ]; then
         echo "Additional argument needed."
         exit 1
     fi
     check_prerequisities
-
     run_nmap "$1"
 
     while [ ! -s "$FILEPATH" ]; do
+        counter=`expr $counter + 1`
         sleep 2
-        echo "Checking..."
-        run_nmap
+        echo "Checking #$counter time(s)"
+        run_nmap "$1"
     done
 
     if [ -s "$FILEPATH" ]
