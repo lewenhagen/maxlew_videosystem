@@ -90,10 +90,16 @@ body {
     justify-content: space-around;
 }
 
+.green {
+    color: green;
+}
 
+.red {
+    color: red;
+}
 
 .selected {
-    background-color: green;
+    background-color: lightgreen;
 }
 
 .logocolor {

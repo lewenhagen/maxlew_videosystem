@@ -34,7 +34,7 @@ check_prerequisities()
 
 run_nmap()
 {
-    nmap -sP -R $(/sbin/ifconfig | grep eno1 -a1 | tail -1 | sed -En 's/inet.([0-9]{3}.*)\s\snetmask.*/\1/p' | cut -d"." -f1-3 | xargs).0/24 | grep $1 | cut -d"(" -f2 | cut -d ")" -f1 > "$FILEPATH"
+    nmap -sP $(/sbin/ifconfig | grep eno1 -a1 | tail -1 | sed -En 's/inet.([0-9]{3}.*)\s\snetmask.*/\1/p' | cut -d"." -f1-3 | xargs).0/24 | grep $1 | cut -d"(" -f2 | cut -d ")" -f1 > "$FILEPATH"
     # || { echo >&2 "Something went wrong with the super command..."; exit 1; }
 }
 

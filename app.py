@@ -398,26 +398,81 @@ def all_quad():
 def admin(action=None):
     """ Admin route """
     global data
-    admindata = ""
+    admindata = []
 
     if action == "menu":
         pass
     elif action == "check":
-        admindata = functions.get_ips_from_file()
+        ips = functions.get_ips_from_file()
+
+        for ip in ips:
+            if functions.pingwithip(ip):
+                admindata.append(ip + "\t\t<span class='green'>(online)</span>")
+            else:
+                admindata.append(ip + "\t\t<span class='red'>(offline)</span>")
+
     elif action == "checkconfig":
         admindata = functions.get_config_from_file()
+    elif action == "deleteconfig":
+        admindata = functions.delete_config()
+    elif action == "deleteipadress":
+        return render_template("admin_deleteip.html", data=functions.get_ips_from_file())
 
 
     return render_template("admin.html", action=action, data=admindata)
 
-@app.route('/admin-search', methods=['GET'])
-def adminsearch():
-    """ Route for the admin search route """
-    search = request.args.get("search")
-    action = "ipcheck"
-    admindata = functions.run_ip_check(search)
+@app.route('/admin-insert', methods=['GET'])
+def admin_insert():
+    """ Route for the admin insert ip route """
+    insert_ip = request.args.get("ipadress")
+    action = "ipinsert"
 
+    if insert_ip == "":
+        admindata = "No ip provided."
+        return render_template("admin.html", action=action ,data=admindata)
+    elif not str(insert_ip).startswith(str(functions.get_subnet())):
+
+        admindata = "The camera must be on the local network. (ip should start with {})".format(functions.get_subnet())
+        return render_template("admin.html", action=action ,data=admindata)
+
+    else:
+
+        result = functions.pingwithip(insert_ip)
+
+        if result == True:
+            admindata = functions.insert_ip(insert_ip)
+        else:
+            action = "acceptip"
+            admindata = insert_ip
+            return render_template("admin.html", action=action ,data=admindata)
+
+    #
     return render_template("admin.html", action=action ,data=admindata)
+
+@app.route('/admin-remove/<int:ipaddress>')
+def admin_remove(ipaddress=None):
+    """ Route for the admin remove ip route """
+    admindata = ""
+
+    if ipaddress != None:
+        admindata = functions.remove_ip(ipaddress)
+
+    action = "removeip"
+    return render_template("admin.html", action=action ,data=admindata)
+
+@app.route('/admin-force-add/<string:ipaddress>')
+def admin_force_add(ipaddress=None):
+    """ Route for the admin remove ip route """
+    admindata = "Nothing here..."
+
+    if ipaddress != None:
+        admindata = functions.insert_ip(ipaddress)
+
+
+    action = "ipinsert"
+    return render_template("admin.html", action=action ,data=admindata)
+
+
 
 @app.route('/admin-config', methods=['POST', 'GET'])
 def adminconfig():

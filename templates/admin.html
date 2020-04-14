@@ -6,47 +6,89 @@
     {% if action == "menu" %}
         <h1>Admin menu</h1>
         <ul class="nes-list">
-            <li>1. Check current ip adresses</li>
-            <li>2. Run ip check</li>
-            <li>3. Run config</li>
-            <li>4. Check config file</li>
+            <li>---------- IP ADRESS FILE ----------</li>
+            <li>1. Check current ip addresses</li>
+            <li>2. Add ip address</li>
+            <li>3. Delete ip address</li>
+            <!-- <li>4. Delete ip file</li> -->
+            <li>---------- CONFIG FILE ----------</li>
+            <li>4. Run config</li>
+            <li>5. Check config file</li>
+            <li>6. Delete config file</li>
         </ul>
     {% elif action == "check" %}
         <h3>Found {{ data|length }} cameras.</h3>
-        <p>{{ data }}</p>
-    {% elif action == "ipcheck" %}
+        <p>
+            {% for d in data %}
+                {{ d|safe}} <br>
+            {% endfor %}
+        </p>
+    {% elif action == "ipinsert" %}
         {{ data }}
     {% elif action == "checkconfig" %}
-        {% for d in data %}
-        <p>{{ d }}</p>
-        {% endfor %}
+        <p>{{ data }}</p>
+    {% elif action == "removeip" %}
+        <p>{{ data }}</p>
+    {% elif action == "deleteconfig" %}
+        <p>{{ data }}</p>
+    {% elif action == "acceptip" %}
+        <p>No device detected on: {{ data }}.</p><p>Press Enter to add it anyway.</p>
+        <div id="ip" style="display:none">{{ data }}</div>
+        <script>
+        let ip = document.getElementById("ip").innerHTML;
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                window.location.replace(`/admin-force-add/${ip}`);
+            } else {
+                window.location.replace("/admin/menu");
+            }
+        })
+        </script>
     {% endif %}
 
 </div>
 <script>
-    document.addEventListener("keydown", function(event) {
+    function handleMenu(event) {
         let key = event.key;
-
+        let el;
         switch(key) {
             case "1":
                 window.location.replace("/admin/check");
                 break;
             case "2":
-                let el = document.getElementsByClassName("nes-container")[0];
+                document.removeEventListener("keydown", handleMenu);
+                el = document.getElementsByClassName("nes-container")[0];
                 el.innerHTML += `
-                <form class="selectform" method="GET" action="/admin-search">
-                    <label for="name_field">Manufacturer?</label>
-                    <input type="text" autofocus id="name_field" name="search" class="nes-input">
+                <form class="selectform" method="GET" action="/admin-insert">
+                    <label for="ip_field">Enter ip address and press Enter:</label>
+                    <input type="text" autofocus id="ip_field" name="ipadress" class="nes-input">
                     <input type="submit" hidden>
-                    </form>
+                </form>
                 `;
-                // window.location.replace("/admin/ipcheck");
                 break;
             case "3":
+                window.location.replace("/admin/deleteipadress");
+                break;
+
+            case "4":
                 window.location.replace("/admin-config");
                 break;
-            case "4":
+            case "5":
                 window.location.replace("/admin/checkconfig");
+                break;
+            case "6":
+                el = document.getElementsByClassName("nes-container")[0];
+                el.innerHTML += "<h3>Are you sure? Press Enter to continue...</h3>";
+                document.addEventListener("keydown", function(event) {
+                    let key2 = event.key;
+                    switch (key2) {
+                        case "Enter":
+                            window.location.replace("/admin/deleteconfig");
+                            break;
+                        default:
+                            break;
+                    }
+                })
                 break;
             case "+":
                 window.location.replace("/0");
@@ -54,9 +96,10 @@
             case "-":
                 window.location.replace("/admin/menu");
                 break;
+            }
+    }
 
-        }
-    })
+    document.addEventListener("keydown", handleMenu);
 </script>
 
 {% include 'footer.html' %}

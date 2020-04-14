@@ -60,19 +60,82 @@ def get_ips_from_file():
 
 def get_config_from_file():
     filename = "script/user_config.txt"
+    message = ""
     lines = []
     if not os.path.exists(filename):
         os.mknod(filename)
-        
+
     with open(filename) as filehandle:
         lines = filehandle.read().splitlines()
 
-    return lines
+    if len(lines) < 1:
+        message = "No config yet, but the file is there."
+    else:
+        message = "\n".join(lines)
 
-def run_ip_check(search):
-    from subprocess import call
-    call(["script/maxlew.sh", "init", search])
-    return "Done. Press - to get back to the admin menu."
+    return message
+
+# def run_ip_check(search):
+#     from subprocess import call
+#     call(["script/maxlew.sh", "init", search])
+#     return "Done. Press - to get back to the admin menu."
+def get_subnet():
+    import subprocess
+
+    process = os.popen("echo $(hostname -I | cut -d'.' -f1-3)")
+    sn = process.read()
+    process.close()
+    return sn.strip()
+
+def pingwithip(ipaddress):
+    online = False
+
+    process = os.popen("ping -c 1 -w2 {} > /dev/null; echo $?".format(ipaddress))
+    response = process.read().strip()
+
+    process.close()
+
+    if response == "0":
+        online = True
+
+    return online
+
+def insert_ip(ipadress):
+    filename = "script/ips.txt"
+    lines = []
+    message = "No address added."
+
+    with open(filename) as filehandle:
+        lines = filehandle.read().splitlines()
+
+    lines.append(ipadress)
+
+    with open(filename, "w") as filehandle:
+        filehandle.write("\n".join(lines))
+
+    message = "Address: {} inserted.".format(ipadress)
+
+    return message
+
+def remove_ip(ipaddress):
+    filename = "script/ips.txt"
+    lines = []
+    message = "No address removed."
+    temp = ""
+
+    if ipaddress != "":
+        with open(filename) as filehandle:
+            lines = filehandle.read().splitlines()
+
+        temp = lines[ipaddress-1]
+        del lines[ipaddress-1]
+
+        with open(filename, "w") as filehandle:
+            filehandle.write("\n".join(lines))
+
+        message = "Address: {} removed.".format(temp)
+
+    return message
 
 def generate_user_config(form):
     ips = get_ips_from_file()
@@ -95,3 +158,13 @@ def read_user_config():
     else:
         return False
     return user_setup
+
+def delete_config():
+    configpath = "script/user_config.txt"
+    message = "File: {} removed.".format(configpath)
+    if os.path.exists(configpath):
+        os.remove(configpath)
+    else:
+        message = "The file {} does not exist!".format(configpath)
+
+    return message
