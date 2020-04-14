@@ -456,6 +456,6 @@ def internal_server_error(e):
 if __name__ == "__main__":
     # configpath = "script/user_config.txt"
 
-    # from waitress import serve
-    # serve(app, host="0.0.0.0", port=5000, threads=8)
-    app.run(threaded=True)
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=5000, threads=8)
+    # app.run(threaded=True)
