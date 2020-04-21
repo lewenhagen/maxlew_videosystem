@@ -52,7 +52,10 @@ def set_quad_cam(data, user_setup):
 def get_ips_from_file():
     filename = "script/ips.txt"
     lines = []
-    with open(filename) as filehandle:
+    if not os.path.isfile(filename):
+        with open(filename, "w+"):
+            pass
+    with open(filename, "r") as filehandle:
         lines = filehandle.read().splitlines()
 
     return lines
@@ -105,7 +108,7 @@ def insert_ip(ipadress):
     lines = []
     message = "No address added."
 
-    with open(filename) as filehandle:
+    with open(filename, "w+") as filehandle:
         lines = filehandle.read().splitlines()
 
     lines.append(ipadress)
