@@ -108,12 +108,15 @@ def insert_ip(ipadress):
     lines = []
     message = "No address added."
 
-    with open(filename, "w+") as filehandle:
-        lines = filehandle.read().splitlines()
+    if not os.path.exists(filename):
+        os.mknod(filename)
+    else:
+        with open(filename, "r") as filehandle:
+            lines = filehandle.read().splitlines()
 
     lines.append(ipadress)
 
-    with open(filename, "w") as filehandle:
+    with open(filename, "w+") as filehandle:
         filehandle.write("\n".join(lines))
 
     message = "Address: {} inserted.".format(ipadress)

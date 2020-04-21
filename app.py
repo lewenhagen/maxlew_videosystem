@@ -10,6 +10,7 @@ import functions
 import gc
 import json
 import os
+import math
 
 # User defined options
 # ["<name>", <ipadress>]
@@ -26,9 +27,12 @@ data = {}
 if user_setup:
     data["mapping"] = [item[0] for item in user_setup]
 
+data["fps"] = 25
 data["single"] = None
 data["dual"] = tuple()
 data["delayed"] = []
+superdelay = 0
+
 def generate_menu():
     menu = [
         {
@@ -80,11 +84,12 @@ def gen1(delay):
             frames.append(camera.get_frame())
 
             counter+=1
-            if len(frames) >= (int(delay)*25):
+            if len(frames) >= (int(delay)*data["fps"]):
                 yield (b'--frame\r\n'
                        b'Content-Type: image/jpeg\r\n\r\n' + frames.pop(0) + b'\r\n')
             else:
                 # if len(frames) > 0:
+                # math.ceil(delay-len(frames)/30)
                 yield (b'--frame\r\n'
                     b'Content-Type: image/jpeg\r\n\r\n' + camera.get_loading_image() + b'\r\n')
         except:
@@ -105,7 +110,7 @@ def gen2(delay):
         try:
             frames.append(camera.get_frame())
             counter+=1
-            if len(frames) >= (int(delay)*25):
+            if len(frames) >= (int(delay)*data["fps"]):
                 yield (b'--frame\r\n'
                        b'Content-Type: image/jpeg\r\n\r\n' + frames.pop(0) + b'\r\n')
             else:
@@ -131,7 +136,7 @@ def gen3(delay):
         try:
             frames.append(camera.get_frame())
             counter+=1
-            if len(frames) >= (int(delay)*25):
+            if len(frames) >= (int(delay)*data["fps"]):
                 yield (b'--frame\r\n'
                        b'Content-Type: image/jpeg\r\n\r\n' + frames.pop(0) + b'\r\n\r\n')
             else:
@@ -154,7 +159,7 @@ def gen4(delay):
         try:
             frames.append(camera.get_frame())
             counter+=1
-            if len(frames) >= (int(delay)*25):
+            if len(frames) >= (int(delay)*data["fps"]):
                 yield (b'--frame\r\n'
                        b'Content-Type: image/jpeg\r\n\r\n' + frames.pop(0) + b'\r\n\r\n')
             else:
@@ -367,6 +372,7 @@ def quad():
 @app.route('/delaystream/<int:delay>/<int:gen>')
 def delaystream(delay, gen):
     """ Route used by delayed streams """
+
     if gen == 1:
         return Response(gen1(delay), mimetype='multipart/x-mixed-replace; boundary=frame')
     elif gen == 2:
