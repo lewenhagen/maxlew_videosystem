@@ -91,7 +91,7 @@ def gen1(delay):
                 # if len(frames) > 0:
                 # math.ceil(delay-len(frames)/30)
                 yield (b'--frame\r\n'
-                    b'Content-Type: image/jpeg\r\n\r\n' + camera.get_loading_image() + b'\r\n')
+                    b'Content-Type: image/jpeg\r\n\r\n' + camera.get_loading_image(math.ceil(delay-len(frames)/data["fps"])) + b'\r\n')
         except:
             print("Gen 1 done.")
             frames = []
@@ -116,7 +116,7 @@ def gen2(delay):
             else:
                 # if len(frames) >= 0:
                 yield (b'--frame\r\n'
-                    b'Content-Type: image/jpeg\r\n\r\n' + camera.get_loading_image() + b'\r\n')
+                    b'Content-Type: image/jpeg\r\n\r\n' + camera.get_loading_image(math.ceil(delay-len(frames)/data["fps"])) + b'\r\n')
         except:
             print("Gen 2 done.")
             frames = []
@@ -142,7 +142,7 @@ def gen3(delay):
             else:
                 if len(frames) >= 0:
                     yield (b'--frame\r\n'
-                        b'Content-Type: image/jpeg\r\n\r\n' + camera.get_loading_image() + b'\r\n\r\n')
+                        b'Content-Type: image/jpeg\r\n\r\n' + camera.get_loading_image(math.ceil(delay-len(frames)/data["fps"])) + b'\r\n\r\n')
         except:
             # camera.release_cam()
             print("Gen 3 done.")
@@ -165,7 +165,7 @@ def gen4(delay):
             else:
                 if len(frames) > 0:
                     yield (b'--frame\r\n'
-                        b'Content-Type: image/jpeg\r\n\r\n' + camera.get_loading_image() + b'\r\n\r\n')
+                        b'Content-Type: image/jpeg\r\n\r\n' + camera.get_loading_image(math.ceil(delay-len(frames)/data["fps"])) + b'\r\n\r\n')
         except:
             # camera.rel0ease_cam()
             print("Gen 4 done.")

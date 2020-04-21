@@ -22,10 +22,10 @@ class VideoCamera(object):
     def release_cam(self):
         self.video.release()
 
-    def get_loading_image(self):
+    def get_loading_image(self, counter):
         # print(counter)
-        # img = cv2.imread('static/img/hourglass/{}.jpg'.format(counter))
-        img = cv2.imread('static/img/hour.jpg')
+        img = cv2.imread('static/img/hourglass/{}.jpg'.format(counter))
+        # img = cv2.imread('static/img/hour.jpg')
         ret, jpeg = cv2.imencode('.JPEG', img)
         return jpeg.tobytes()
 
