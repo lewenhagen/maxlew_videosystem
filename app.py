@@ -31,7 +31,9 @@ data["fps"] = 25
 data["single"] = None
 data["dual"] = tuple()
 data["delayed"] = []
-superdelay = 0
+data["slowmotion"] = []
+data["recording"] = False
+# superdelay = 0
 
 def generate_menu():
     menu = [
@@ -71,6 +73,44 @@ def generate_menu():
 
 if user_setup:
     menu = generate_menu()
+
+def slow(percent):
+    global data
+
+    camera = data["slowcam"]
+
+    if percent > 0:
+        import time
+        starttime = time.time()
+        p = (100 / percent)
+        counter = 0
+        minicounter = 0
+        while True:
+            if (time.time() - starttime)*data["fps"] > p:
+                counter += 1
+                starttime = time.time()
+            try:
+                yield (b'--frame\r\n'
+                b'Content-Type: image/jpeg\r\n\r\n' + data["slowmotion"][counter % len(data["slowmotion"])] + b'\r\n')
+
+            except:
+                print("Slowmotion {}% done.".format(percent))
+                break
+    else:
+        counter = -1
+        while True:
+            try:
+                data["slowmotion"].append(camera.get_frame())
+
+                counter+=1
+
+                yield (b'--frame\r\n'
+                       b'Content-Type: image/jpeg\r\n\r\n' + data["slowmotion"][counter] + b'\r\n')
+
+            except:
+                print("Slowmotion recording done.")
+
+                break
 
 def gen1(delay):
     global data
@@ -215,8 +255,8 @@ def main(menu_nr):
     try:
         data["single"] = None
         data["dual"] = tuple()
-
-        print("Releasing single, dual cams")
+        data["slowmotion"] = []
+        print("Releasing single, dual, slowmotion cams")
     except:
         print("No cams to release")
 
@@ -274,6 +314,7 @@ def stream():
         data["delayed"] = [chosencamera]
         return render_template("one_cam_delay.html", data=data["delayed"], delay=delay)
     else:
+        data["slowcam"] = chosencamera
         return render_template("one_cam.html", data=chosencamera)
 
 
@@ -368,6 +409,18 @@ def quad():
     return render_template("quad.html", data=data["delayed"], delay=data["delay"], delta=timedelta)
 
 
+@app.route('/view_slow', methods=['GET'])
+def view_slow():
+    """ Route for the view slow """
+    percent = 0
+    try:
+        percent = int(request.args.get("slowpercent"))
+    except:
+        pass
+
+    return render_template("view_slow.html", data=data["slowcam"], percent=percent)
+
+
 
 @app.route('/delaystream/<int:delay>/<int:gen>')
 def delaystream(delay, gen):
@@ -381,6 +434,31 @@ def delaystream(delay, gen):
         return Response(gen3(delay), mimetype='multipart/x-mixed-replace; boundary=frame')
     elif gen == 4:
         return Response(gen4(delay), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+@app.route('/slowmotion')
+def slowmotion():
+    """ Route used to slowmotion streams """
+    global data
+    # data["slowmotion"].append()
+    return render_template("one_cam_slow.html", data=data["slowcam"])
+
+@app.route('/slowmotion_stream/<int:percent>')
+def slowmotion_stream(percent):
+    """ Route used by slowmotion streams """
+    res_percent = 0
+    try:
+        res_percent = int(percent)
+    except:
+        pass
+    return Response(slow(res_percent), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/slowmotion/break')
+def slowmotion_break():
+    """ Route used to break slowmotion streams """
+    global data
+
+    return render_template("slow_percent.html", cam=data["slowcam"])
 
 
 @app.route("/splashscreen")

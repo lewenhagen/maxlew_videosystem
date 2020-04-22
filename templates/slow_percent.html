@@ -1,0 +1,32 @@
+{% include 'header.html' %}
+
+<div class="container">
+    <div class="nes-container is-rounded" style="margin: 0 auto;">
+
+        <form class="selectform" method="GET" action="/view_slow">
+            <label for="name_field">Skriv in önskad % för <span class="logocolor">{{ cam.get_name() }} </span>(s) och tryck Enter:</label>
+            <input type="number" autofocus id="name_field" name="slowpercent" class="nes-input" required>
+            <input type="submit" hidden>
+        </form>
+    </div>
+</div>
+
+<!-- <script src="{{ url_for('static',filename='js/menu.js') }}"></script> -->
+<script>
+    document.addEventListener("keydown", function(event) {
+        let key = event.key;
+
+        switch(key) {
+            case "ArrowUp":
+            case "ArrowDown":
+                event.preventDefault();
+                break;
+            case "+":
+                window.location.replace("/0");
+                break;
+
+        }
+    })
+</script>
+
+{% include 'footer.html' %}

@@ -3,11 +3,11 @@
 <style>
 .fullscreen:after {
     color: #00AEEF;
-    content: "{{ data.get_name() }} (LIVE)";
+    content: "{{ data.get_name() }} ({{ percent }} %)";
 }
 </style>
 <div class="container">
-    <div class="fullscreen" style="background-image:url({{ data.get_url() }});"></div>
+    <div class="fullscreen" style="background-image:url({{ url_for('slowmotion_stream', percent=percent) }});"></div>
 
 </div>
 
@@ -18,7 +18,7 @@
         console.log(event);
         switch(key) {
             case "/":
-                window.location.replace("/slowmotion");
+                window.location.replace("/slowmotion/break");
                 break;
             case "+":
                 window.location.replace("/0");

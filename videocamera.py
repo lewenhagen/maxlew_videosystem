@@ -40,6 +40,7 @@ class VideoCamera(object):
 
         if not ret:
             return
+
         return jpeg.tobytes()
 
     def set_quality(self, resolution):

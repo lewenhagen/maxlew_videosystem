@@ -1,6 +1,6 @@
 (function() {
     "use strict";
-    
+
     document.addEventListener("keydown", function(event) {
         let key = event.key;
 
