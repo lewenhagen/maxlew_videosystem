@@ -26,9 +26,19 @@ version()
     printf "Version: %s\n" "$VERSION"
 }
 
+install()
+{
+    echo "Installing google chrome..."
+    cd ~ && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && apt install -y ./google-chrome-stable_current_amd64 python3 python3-pip nmap net-tools && rm google-chrome-stable_current_amd64 && cd ~/maxlew_videosystem/script
+    # echo "Installing python3..."
+    # apt-get install -y python3 python3-pip nmap net-tools
+    # type nmap >/dev/null 2>&1 || { echo >&2 "I require nmap but it's not installed.  Aborting."; exit 1; }
+    # type /sbin/ifconfig >/dev/null 2>&1 || { echo >&2 "I require ifconfig but it's not installed. Install it by running 'apt install net-tools'.  Aborting."; exit 1; }
+}
+
 check_prerequisities()
 {
-    type nmap >/dev/null 2>&1 || { echo >&2 "I require nmap but it's not installed.  Aborting."; exit 1; }
+    type google-chrome >/dev/null 2>&1 || { echo >&2 "I require nmap but it's not installed.  Aborting."; exit 1; }
     type /sbin/ifconfig >/dev/null 2>&1 || { echo >&2 "I require ifconfig but it's not installed. Install it by running 'apt install net-tools'.  Aborting."; exit 1; }
 }
 
@@ -127,6 +137,11 @@ main()
 
             boot)
                 boot
+                exit 0
+            ;;
+
+            install)
+                install
                 exit 0
             ;;
 
