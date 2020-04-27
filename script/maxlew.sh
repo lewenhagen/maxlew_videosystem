@@ -15,7 +15,7 @@ VERSION="1.0"
 
 # Command to find connected Axis cameras
 # nmap -sP $(ifconfig | grep eno1 -a1 | tail -1 | sed -En 's/inet.([0-9]{3}.*)\s\snetmask.*/\1/p' | cut -d"." -f1-3 | xargs).0/24 | grep axis | cut -d"(" -f2 | cut -d ")" -f1
-
+PATH_TO_EXEC="$HOME/maxlew_videosystem"
 PATH_TO_SYSTEM="$HOME/git/priv/maxlew_videosystem/script"
 FILEPATH="$PATH_TO_SYSTEM/ips.txt"
 # rm $FILEPATH
@@ -63,7 +63,7 @@ boot()
             kill $oldport && echo "Old stuff killed."
         fi
 
-        cd ~/git/priv/maxlew_videosystem && python3 app.py &
+        cd "$PATH_TO_EXEC" && python3 app.py &
 
         sleep 3
 
