@@ -27,7 +27,7 @@ data = {}
 if user_setup:
     data["mapping"] = [item[0] for item in user_setup]
 
-data["fps"] = 25
+data["fps"] = 30
 data["single"] = None
 data["dual"] = tuple()
 data["delayed"] = []
@@ -124,6 +124,9 @@ def gen1(delay):
             frames.append(camera.get_frame())
 
             counter+=1
+            imgcounter = math.ceil(delay-len(frames)/data["fps"])
+            if imgcounter > 36:
+                imgcounter = 36
             if len(frames) >= (int(delay)*data["fps"]):
                 yield (b'--frame\r\n'
                        b'Content-Type: image/jpeg\r\n\r\n' + frames.pop(0) + b'\r\n')
@@ -131,7 +134,7 @@ def gen1(delay):
                 # if len(frames) > 0:
                 # math.ceil(delay-len(frames)/30)
                 yield (b'--frame\r\n'
-                    b'Content-Type: image/jpeg\r\n\r\n' + camera.get_loading_image(math.ceil(delay-len(frames)/data["fps"])) + b'\r\n')
+                    b'Content-Type: image/jpeg\r\n\r\n' + camera.get_loading_image(imgcounter) + b'\r\n')
         except:
             print("Gen 1 done.")
             frames = []
