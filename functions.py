@@ -103,6 +103,11 @@ def pingwithip(ipaddress):
 
     return online
 
+def shutdown():
+    # os.system("shutdown /s /t 1")
+    # os.popen("shutdown /s /t 1")
+    os.system("shutdown -h now")
+
 def insert_ip(ipadress):
     filename = "script/ips.txt"
     lines = []

@@ -26,6 +26,9 @@
             case "m":
                 window.location.replace("/admin/menu");
                 break;
+            case "*":
+                window.location.replace("/shutdown");
+                break;
         }
     })
 

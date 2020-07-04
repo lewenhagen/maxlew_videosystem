@@ -1,0 +1,29 @@
+{% include 'header.html' %}
+
+<div class="container">
+    <div class="nes-container is-rounded" style="margin: 0 auto;">
+        <div id="randomnumber">{{ secret }}</div>
+        <form class="selectform" method="POST">
+            <label for="shutdown">Skriv in de fyra siffrorna och tryck Enter:</label>
+            <input type="text" id="shutdown" name="shutdown" class="nes-input" autofocus required>
+            <input type="hidden" value="{{ secret }}" name="secret">
+            <input type="submit" hidden>
+        </form>
+    </div>
+</div>
+
+<script>
+//
+// document.addEventListener("keydown", function(event) {
+//     if (event.key === "Enter") {
+//         let secret = document.getElementById("randomnumber").innerHTML;
+//         let userval = document.getElementById("shutdown").value;
+//         if (parseInt(userval) === parseInt(val)) {
+//             window.location.replace(`/doshutdown/${val}`);
+//         }
+//         // window.location.replace(`/admin-force-add/${ip}`);
+//     }
+// });
+
+</script>
+<!-- {% include 'footer.html' %} -->

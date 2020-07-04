@@ -11,6 +11,7 @@ import gc
 import json
 import os
 import math
+import random
 
 # User defined options
 # ["<name>", <ipadress>]
@@ -330,6 +331,18 @@ def select_dual_cam(left, right):
     chosencams = functions.get_dual_cams(data)
 
     return render_template("dual.html", cams=chosencams, left=left, right=right)
+
+
+@app.route("/shutdown", methods=['GET', 'POST'])
+def shutdown():
+    """ shutdown route """
+    if request.method == 'POST':
+        if request.values.get('shutdown') == request.values.get('secret'):
+            return functions.shutdown()
+        else:
+            return render_template("shutdown.html", secret=random.randint(1000, 9999))
+    else:
+        return render_template("shutdown.html", secret=random.randint(1000, 9999))
 
 
 
