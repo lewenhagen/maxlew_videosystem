@@ -75,6 +75,29 @@ boot()
     fi
 }
 
+hardboot()
+{
+    sleep 5
+    #
+    oldport=$(lsof -i :5000 | cut -d" " -f2 | tail -n1)
+
+    if [ -z "$oldport" ]; then
+        echo "No port in use..."
+    else
+        kill $oldport && echo "Old stuff killed."
+    fi
+
+    cd "$PATH_TO_EXEC" && python3 app.py &
+
+    sleep 3
+
+    google-chrome --app="http://localhost:5000/splashscreen" &
+
+    sleep 1
+
+    xdotool key F11
+}
+
 init()
 {
     counter=0
@@ -127,6 +150,11 @@ main()
 
             boot)
                 boot
+                exit 0
+            ;;
+
+            hardboot)
+                hardboot
                 exit 0
             ;;
 
