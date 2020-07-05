@@ -21,6 +21,7 @@
                 window.location.replace(`/splashscreen`);
                 break;
             case "+":
+                event.preventDefault();
                 window.location.replace("/0");
                 break;
             case "m":
