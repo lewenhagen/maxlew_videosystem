@@ -106,7 +106,7 @@ def pingwithip(ipaddress):
 def shutdown():
     # os.system("shutdown /s /t 1")
     # os.popen("shutdown /s /t 1")
-    os.system("shutdown -h now")
+    os.system("sudo shutdown -h now")
 
 def insert_ip(ipadress):
     filename = "script/ips.txt"
