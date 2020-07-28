@@ -153,8 +153,8 @@ def generate_user_config(form):
 
     result = []
     for index, ip in enumerate(ips):
-        if pingwithip(ip):
-            result.append([form["name_" + str(index+1)], "http://" + ip])
+        # if pingwithip(ip):
+        result.append([form["name_" + str(index+1)], "http://" + ip])
 
     filename = "script/user_config.txt"
     with open(filename, "w") as outfile:
@@ -164,12 +164,16 @@ def generate_user_config(form):
 
 def read_user_config():
     configpath = "script/user_config.txt"
+    result = []
     if os.path.exists(configpath) and os.path.getsize(configpath) > 0:
         with open(configpath) as json_file:
             user_setup = json.load(json_file)
+            for item in user_setup:
+                if pingwithip(item[1]):
+                    result.append(item)
     else:
         return False
-    return user_setup
+    return result
 
 def delete_config():
     configpath = "script/user_config.txt"

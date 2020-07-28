@@ -26,6 +26,10 @@ user_setup = functions.read_user_config()
 data = {}
 # data["cameras"] = functions.init_list_of_new_cameras(user_setup)
 if user_setup:
+    # for item in user_setup:
+    #     if functions.pingwithip(item[1]):
+    #         data["mapping"] = [item[0]]
+
     data["mapping"] = [item[0] for item in user_setup]
 
 data["fps"] = 30
