@@ -153,7 +153,8 @@ def generate_user_config(form):
 
     result = []
     for index, ip in enumerate(ips):
-        result.append([form["name_" + str(index+1)], "http://" + ip])
+        if pingwithip(ip):
+            result.append([form["name_" + str(index+1)], "http://" + ip])
 
     filename = "script/user_config.txt"
     with open(filename, "w") as outfile:
